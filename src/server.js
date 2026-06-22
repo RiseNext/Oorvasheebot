@@ -156,11 +156,7 @@ ${product.productLink}
 
 🌐 ${WEBSITE_URL}`;
 
-    if (product.imageUrl) {
-      await sendImageMessage(from, product.imageUrl, productCaption);
-    } else {
-      await sendTextMessage(from, productCaption);
-    }
+ await sendTextMessage(from, productCaption);
 
     return res.sendStatus(200);
   } catch (error) {
