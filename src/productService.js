@@ -23,13 +23,14 @@ function formatPrice(price) {
 }
 
 function buildProductLink(product) {
-  if (product?.slug) {
-    return `${WEBSITE_URL}/products/${product.slug}`;
-  }
+  const code =
+    product?.code ||
+    product?.product_code ||
+    product?.productCode ||
+    product?.sku ||
+    '';
 
-  return `${WEBSITE_URL}/search?q=${encodeURIComponent(
-    product?.code || product?.productCode || ''
-  )}`;
+  return `${WEBSITE_URL}/search?q=${encodeURIComponent(code)}`;
 }
 
 export async function findProductByCode(messageText = '') {
@@ -77,17 +78,20 @@ export async function findProductByCode(messageText = '') {
 
     return {
       ...matchedProduct,
+
       code:
         matchedProduct.code ||
         matchedProduct.product_code ||
         matchedProduct.productCode ||
         matchedProduct.sku ||
         code,
+
       name:
         matchedProduct.name ||
         matchedProduct.title ||
         matchedProduct.productName ||
         'Oorvashee Saree',
+
       price: formatPrice(
         matchedProduct.base_price ||
           matchedProduct.price ||
@@ -95,6 +99,7 @@ export async function findProductByCode(messageText = '') {
           matchedProduct.salePrice ||
           matchedProduct.mrp
       ),
+
       imageUrl:
         matchedProduct.primary_image_url ||
         matchedProduct.imageUrl ||
@@ -104,14 +109,17 @@ export async function findProductByCode(messageText = '') {
         matchedProduct.images?.[0]?.url ||
         matchedProduct.images?.[0] ||
         null,
-      productLink:
-        matchedProduct.productLink ||
-        matchedProduct.product_link ||
-        matchedProduct.url ||
-        buildProductLink({ ...matchedProduct, code }),
+
+      productLink: buildProductLink({
+        ...matchedProduct,
+        code,
+      }),
     };
   } catch (error) {
-    console.error('Product lookup error:', error?.response?.data || error.message);
+    console.error(
+      'Product lookup error:',
+      error?.response?.data || error.message
+    );
     return null;
   }
 }
