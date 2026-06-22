@@ -78,7 +78,10 @@ app.post('/webhook', async (req, res) => {
     if (!message) return res.sendStatus(200);
 
     const from = message.from;
-    const text = message?.text?.body?.trim();
+    const text =
+  message?.text?.body?.trim() ||
+  message?.image?.caption?.trim() ||
+  message?.document?.caption?.trim();
 
     if (!from || !text) return res.sendStatus(200);
 
