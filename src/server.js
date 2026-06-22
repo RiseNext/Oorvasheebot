@@ -12,9 +12,7 @@ const app = express();
 
 const PORT = process.env.PORT || 5000;
 const VERIFY_TOKEN = process.env.VERIFY_TOKEN || 'oorvasi_verify_123';
-const WEBSITE_URL =
-  process.env.WEBSITE_URL ||
-  'https://oorvashee-arz7zp4y6-risenexts-projects.vercel.app';
+const WEBSITE_URL = process.env.WEBSITE_URL || 'https://oorvashee.com';
 
 app.use(helmet());
 app.use(cors());
@@ -33,22 +31,30 @@ app.get('/api/health', (req, res) => {
   res.status(200).json({ status: 'ok' });
 });
 
-app.get('/test/:code', (req, res) => {
-  const code = req.params.code;
-  const product = findProductByCode(code);
+app.get('/test/:code', async (req, res) => {
+  try {
+    const code = req.params.code;
+    const product = await findProductByCode(code);
 
-  if (!product) {
-    return res.status(404).json({
-      status: 'not_found',
-      message: 'Product code not found',
-      code: code.toUpperCase(),
+    if (!product) {
+      return res.status(404).json({
+        status: 'not_found',
+        message: 'Product code not found',
+        code: code.toUpperCase(),
+      });
+    }
+
+    return res.status(200).json({
+      status: 'success',
+      product,
+    });
+  } catch (error) {
+    console.error('Test route error:', error.message);
+    return res.status(500).json({
+      status: 'error',
+      message: 'Product lookup failed',
     });
   }
-
-  return res.status(200).json({
-    status: 'success',
-    product,
-  });
 });
 
 app.get('/webhook', (req, res) => {
@@ -69,16 +75,12 @@ app.post('/webhook', async (req, res) => {
     const body = req.body;
     const message = body?.entry?.[0]?.changes?.[0]?.value?.messages?.[0];
 
-    if (!message) {
-      return res.sendStatus(200);
-    }
+    if (!message) return res.sendStatus(200);
 
     const from = message.from;
     const text = message?.text?.body?.trim();
 
-    if (!from || !text) {
-      return res.sendStatus(200);
-    }
+    if (!from || !text) return res.sendStatus(200);
 
     console.log(`Incoming message from ${from}: ${text}`);
 
@@ -101,7 +103,7 @@ app.post('/webhook', async (req, res) => {
 📌 To get product details instantly, simply send the Saree Code.
 
 Example:
-ORV001
+FC14-799
 
 You will receive:
 
@@ -121,7 +123,7 @@ ${WEBSITE_URL}
       return res.sendStatus(200);
     }
 
-    const product = findProductByCode(text);
+    const product = await findProductByCode(text);
 
     if (!product) {
       await sendTextMessage(
@@ -131,7 +133,7 @@ ${WEBSITE_URL}
 📌 Please verify the code and try again.
 
 Example:
-ORV001
+FC14-799
 
 🌐 Browse our latest collection:
 ${WEBSITE_URL}
@@ -145,7 +147,7 @@ ${WEBSITE_URL}
     const productCaption = `👗 ${product.name}
 
 📌 Product Code: ${product.code}
-💰 Price: ₹${product.price}
+💰 Price: ${typeof product.price === 'number' ? `₹${product.price}` : product.price}
 
 🛍 Shop Now:
 ${product.productLink}
