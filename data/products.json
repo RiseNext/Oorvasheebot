@@ -1,0 +1,23 @@
+[
+  {
+    "code": "ORV001",
+    "name": "Premium Kanchipuram Silk Saree",
+    "price": "2499",
+    "imageUrl": "https://oorvashee-arz7zp4y6-risenexts-projects.vercel.app/sample-saree-1.jpg",
+    "productLink": "https://oorvashee-arz7zp4y6-risenexts-projects.vercel.app/product/ORV001"
+  },
+  {
+    "code": "ORV002",
+    "name": "Designer Pattu Saree",
+    "price": "1999",
+    "imageUrl": "https://oorvashee-arz7zp4y6-risenexts-projects.vercel.app/sample-saree-2.jpg",
+    "productLink": "https://oorvashee-arz7zp4y6-risenexts-projects.vercel.app/product/ORV002"
+  },
+  {
+    "code": "SAREE101",
+    "name": "Traditional Cotton Saree",
+    "price": "1299",
+    "imageUrl": "https://oorvashee-arz7zp4y6-risenexts-projects.vercel.app/sample-saree-3.jpg",
+    "productLink": "https://oorvashee-arz7zp4y6-risenexts-projects.vercel.app/product/SAREE101"
+  }
+]
