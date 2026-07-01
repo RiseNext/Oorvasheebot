@@ -3,10 +3,7 @@ import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import dotenv from 'dotenv';
-<<<<<<< HEAD
 import { processTrackingUpdate } from './trackingService.js';
-=======
->>>>>>> 75b5efbae1e30b8c91b540c2ff3ccecf7a15e17c
 import { findProductByCode } from './productService.js';
 import { sendTextMessage, sendImageMessage } from './whatsappService.js';
 
@@ -172,7 +169,6 @@ ${product.productLink}
   }
 });
 
-<<<<<<< HEAD
 app.post('/api/tracking-update', async (req, res) => {
   try {
 
@@ -195,8 +191,6 @@ app.post('/api/tracking-update', async (req, res) => {
   }
 });
 
-=======
->>>>>>> 75b5efbae1e30b8c91b540c2ff3ccecf7a15e17c
 app.listen(PORT, () => {
   console.log(`Oorvashee WhatsApp Bot running on port ${PORT}`);
 });
