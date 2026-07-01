@@ -58,6 +58,7 @@ export async function sendImageMessage(to, imageUrl, caption) {
     }
   );
 }
+<<<<<<< HEAD
 export async function sendTrackingUpdate(
   to,
   orderId,
@@ -80,3 +81,5 @@ Thank you for shopping with Oorvashee.`;
 
   return sendTextMessage(to, message);
 }
+=======
+>>>>>>> 75b5efbae1e30b8c91b540c2ff3ccecf7a15e17c
